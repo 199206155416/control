@@ -34,8 +34,8 @@ Vue.prototype.$goBack=function(){
 }
 
 
-// FastClick.attach(document.body);  // 引入fastclick并绑定到body 解决移动端点击响应延迟0.3s的问题
-// Vue.config.productionTip = false
+FastClick.attach(document.body);  // 引入fastclick并绑定到body 解决移动端点击响应延迟0.3s的问题
+Vue.config.productionTip = false
 
 new Vue({
   router,

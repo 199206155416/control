@@ -12,7 +12,7 @@ Vue.directive('copy', {
     //   'modifiers: ' + s(binding.modifiers) + '<br>' +
     //   'vnode keys: ' + Object.keys(vnode).join(', ')
 
-    el.onclick = function () {
+    el.addEventListener("click", function () {
       const range = document.createRange();
       const tempDiv = document.createElement('div');
       document.body.append(tempDiv)
@@ -26,7 +26,7 @@ Vue.directive('copy', {
       document.execCommand('copy');
       Toast("复制成功！");
       tempDiv.remove()
-    }
+    }, false);
   }
 })
 
