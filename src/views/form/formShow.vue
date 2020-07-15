@@ -2,7 +2,6 @@
   <div class="form">
     <div v-show="contentShow" :style="{backgroundColor: pageSet.style.ctl_bkcolor, margin: pageSet.style.ctl_margin, padding: pageSet.style.ctl_padding, }">
       <div class="zhanwei"></div>
-
       <header>
         <div class="flex_bewteen">
           <div v-waves2 class="table_wrap left" @click="$goBack();">
@@ -236,6 +235,7 @@
 
     <noContent contText="表单列" v-show="!contentShow" ></noContent>
 
+    <!-- 地图组件 -->
     <tencent-map ref="tencentMap" />
   </div>
 </template>
