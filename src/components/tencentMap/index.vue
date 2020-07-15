@@ -15,10 +15,9 @@
             src="https://3gimg.qq.com/lightmap/components/locationCluster/image/arrow.png"
           />
           <div class="nav-txt">到这里</div>
-        </div> -->
+        </div>-->
       </div>
       <div class="map-item" id="getAddress"></div>
-      <!-- <iframe class="map-item" id="getAddress" @load="loadiframe" :src="srcUrl"></iframe> -->
     </div>
   </van-popup>
 </template>
@@ -30,19 +29,17 @@ export default {
   data() {
     return {
       mapItem: {},
-      hasMapBox: false,
-      srcUrl:
-        "https://3gimg.qq.com/lightmap/v1/marker/?marker=coord:39.892326,116.342763;title:超好吃冰激凌;addr:手帕口桥北铁路道口&referer=myapp&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77"
+      hasMapBox: false
     };
   },
 
   methods: {
-    init() {
+    init(center="39.916527, 116.397128") {
       this.map = new qq.maps.Map(document.getElementById("getAddress"), {
         disableDefaultUI: true,
         zoom: 13,
         // 地图的中心地理坐标。
-        center: new qq.maps.LatLng(39.916527, 116.397128)
+        center: eval(`new qq.maps.LatLng(${center})`)
       });
 
       var anchor = new qq.maps.Point(13, 36),
@@ -73,15 +70,8 @@ export default {
       let city = addressArr.filter(e => e.indexOf("市") !== -1);
       city = (city && city.join("").replace("市", "")) || "";
 
-      let srcUrl = `https://3gimg.qq.com/lightmap/v1/marker/?marker=coord:39.892326,116.342763;title:${item.ctl_value_title};addr:${item.ctl_value}&referer=myapp&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77`;
-      // if(!keyword) return;
       console.log("。。。。。。。。。。。 city", city);
-      if (city) {
-        console.log("has 。。。。。。。。。。。 city", city);
-        srcUrl = srcUrl.replace("center=CurrentLocation", "region=" + city);
-      }
-      console.log("replace srcUrl", srcUrl);
-      this.srcUrl = srcUrl;
+
       this.hasMapBox = true;
       this.mapItem = item;
 
