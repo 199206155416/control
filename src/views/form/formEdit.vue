@@ -1036,8 +1036,8 @@ export default {
     async getformHome() {
       //获取首页数据
       this.$openIndicator();
-      // let res = await this.$http.formList(window.location.href);
-      let res = 
+      let res = await this.$http.formList(window.location.href);
+      let ressss = 
       {
         "success": true,
         "rcode": 200,

@@ -1,6 +1,6 @@
 <template>
   <div class="form">
-    <div v-show="contentShow">
+    <div v-show="contentShow" :style="{backgroundColor: pageSet.style.ctl_bkcolor, margin: pageSet.style.ctl_margin, padding: pageSet.style.ctl_padding, }">
       <div class="zhanwei"></div>
 
       <header>
@@ -236,7 +236,7 @@
 
     <noContent contText="表单列" v-show="!contentShow" ></noContent>
 
-    <van-popup v-model="hasMapBox" position="bottom">
+    <!-- <van-popup v-model="hasMapBox" position="bottom">
       <div class="map-box">
         <div class="basic h90">
           <div v-waves2 class="btn" @click="hideMapBox">返回</div>
@@ -256,8 +256,8 @@
         >
         </iframe>
       </div>
-    </van-popup>
-
+    </van-popup> -->
+    <tencent-map ref="tencentMap" />
   </div>
 </template>
 
@@ -268,18 +268,20 @@ import 'quill/dist/quill.snow.css'
 import { quillEditor } from 'vue-quill-editor'
 import axios from "@/api/axios";
 import { ImagePreview } from 'vant';
+import tencentMap from '@/components/tencentMap';
 
 export default {
   name: "formShow",
   components: {
     noContent,
     quillEditor,
+    tencentMap,
     [ImagePreview.Component.name]: ImagePreview.Component,
   },
   data() {
     return {
       pageTitle: "新建客户",
-      pageSet: { pageTitle: "新建客户", operation: "刷新", type: "edit", operation_url: "" },
+      pageSet: { pageTitle: "新建客户", operation: "刷新", type: "edit", operation_url: "", style: {} },
       srcUrl: "https://apis.map.qq.com/tools/poimarker?type=1&keyword=酒店&center=CurrentLocation&radius=1000&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp",
       template_total: "",
       hasMapBox: false,
@@ -509,25 +511,28 @@ export default {
       // event.enable(false);
     },
     onMapBox(item) {
-      const keyword = item.ctl_value ? item.ctl_value : "广场";
-      const reg = /.+?(省|市|自治区|自治州|县|区)/g;
-      console.log("keyword", keyword);
-      const addressArr = keyword.match(reg);
-      console.log("addressArr", addressArr);
-      console.log("addressArr", addressArr[1].indexOf('市'));
-      let city = addressArr.filter(e => e.indexOf('市') !== -1);
-      city = (city && city.join('').replace('市', '')) || '';
-      let srcUrl = `https://apis.map.qq.com/tools/poimarker?type=1&center=CurrentLocation&radius=1000&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp&tonav=0&keyword=${keyword}`;
-      // if(!keyword) return;
-      console.log("。。。。。。。。。。。 city", city);
-      if(city) {
-        console.log("has 。。。。。。。。。。。 city", city);
-        srcUrl = srcUrl.replace('center=CurrentLocation', 'region=' + city);
-      }
-      console.log("replace srcUrl", srcUrl);
-      this.srcUrl = srcUrl;
-      this.hasMapBox = true;
-      this.mapItem = item;
+
+      // console.log(11111111111, this.$refs["tencentMap"]);
+      this.$refs["tencentMap"].onMapBox(item);
+      // const keyword = item.ctl_value ? item.ctl_value : "广场";
+      // const reg = /.+?(省|市|自治区|自治州|县|区)/g;
+      // console.log("keyword", keyword);
+      // const addressArr = keyword.match(reg);
+      // console.log("addressArr", addressArr);
+      // console.log("addressArr", addressArr[1].indexOf('市'));
+      // let city = addressArr.filter(e => e.indexOf('市') !== -1);
+      // city = (city && city.join('').replace('市', '')) || '';
+      // let srcUrl = `https://apis.map.qq.com/tools/poimarker?type=1&center=CurrentLocation&radius=1000&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp&tonav=0&keyword=${keyword}`;
+      // // if(!keyword) return;
+      // console.log("。。。。。。。。。。。 city", city);
+      // if(city) {
+      //   console.log("has 。。。。。。。。。。。 city", city);
+      //   srcUrl = srcUrl.replace('center=CurrentLocation', 'region=' + city);
+      // }
+      // console.log("replace srcUrl", srcUrl);
+      // this.srcUrl = srcUrl;
+      // this.hasMapBox = true;
+      // this.mapItem = item;
     },
 
     hideMapBox() {
@@ -629,7 +634,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+
+// <style lang="scss" scoped>
 /*共用样式 s*/
 @mixin flexS {
   display: flex;
