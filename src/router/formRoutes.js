@@ -13,11 +13,6 @@ const formRoutes = [
             keepAlive: true,
             scrollTop: 0,
         }
-    },
-    {
-        path: '/previewImage',
-        name: 'previewImage',
-        component: () => import( /* webpackChunkName: "previewImage" */ '@/views/form/previewImage.vue')
-    },
+    }
 ]
 export default formRoutes

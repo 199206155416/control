@@ -10,14 +10,10 @@ import FastClick from 'fastclick'
 import './plugins/waves'
 import './plugins/mini-ui'
 import './plugins/vant'
+import './directive/index'
 
-// import MintUI from 'mint-ui'
-
-// Vue.use(MintUI);
-// import Vant from 'vant';
 import 'vant/lib/index.css';
 
-// Vue.use(Vant);
 
 Vue.prototype.$showToast = showToast
 Vue.prototype.$openIndicator = openIndicator
@@ -38,8 +34,8 @@ Vue.prototype.$goBack=function(){
 }
 
 
-FastClick.attach(document.body);  // 引入fastclick并绑定到body 解决移动端点击响应延迟0.3s的问题
-Vue.config.productionTip = false
+// FastClick.attach(document.body);  // 引入fastclick并绑定到body 解决移动端点击响应延迟0.3s的问题
+// Vue.config.productionTip = false
 
 new Vue({
   router,

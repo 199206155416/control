@@ -1,6 +1,9 @@
 <template>
   <div class="form">
-    <div v-show="contentShow" :style="{backgroundColor: pageSet.style.ctl_bkcolor, margin: pageSet.style.ctl_margin, padding: pageSet.style.ctl_padding, }">
+    <div
+      v-show="contentShow"
+      :style="{backgroundColor: pageSet.style.ctl_bkcolor, margin: pageSet.style.ctl_margin, padding: pageSet.style.ctl_padding, }"
+    >
       <div class="zhanwei"></div>
       <header>
         <div class="flex_bewteen">
@@ -9,46 +12,53 @@
             <div class="table_txt">返回</div>
           </div>
           <div class="table_wrap">
-            <div class="table_txt page-title vant-f15">
-              {{pageSet.pageTitle}}
-            </div>
+            <div class="table_txt page-title vant-f15">{{pageSet.pageTitle}}</div>
           </div>
-          <div v-waves2 class="mt_1 page-title page-title-right vant-f15" @click="operationHandler">
-            {{pageSet.operation}}
-          </div>
+          <div
+            v-waves2
+            class="mt_1 page-title page-title-right vant-f15"
+            @click="operationHandler"
+          >{{pageSet.operation}}</div>
         </div>
       </header>
 
       <div v-for="(item,index) in listFilter(controls)" :key="index">
         <template v-if="item.ctl_type === 'group'">
-          <div class="basic classGroup" :style="{backgroundColor: item.ctl_bkcolor, margin: item.ctl_margin, padding: item.ctl_padding, }">
+          <div
+            class="basic classGroup"
+            :style="{backgroundColor: item.ctl_bkcolor, margin: item.ctl_margin, padding: item.ctl_padding, }"
+          >
             <div class="flex_row">
-              <div class="flex_row groupTitle"
+              <div
+                class="flex_row groupTitle"
                 :style="{height: item.ctl_bar_height,  borderLeftColor: item.ctl_bar_color, borderLeftWidth: item.ctl_bar_width,
                 paddingLeft: item.ctl_spacing,
-                }">
-                <span class="flex_row classTitle"
+                }"
+              >
+                <span
+                  class="flex_row classTitle"
                   :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size, fontStyle: (item.ctl_title_italic ? 'italic':'normal'),
                   fontWeight: (item.ctl_title_bold ? 'bold':'normal'), }"
-                >
-                  {{item.ctl_title}}
-                </span>
+                >{{item.ctl_title}}</span>
               </div>
             </div>
-            <div :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal'),
-              fontWeight: (item.ctl_subtitle_bold ? 'bold':'normal'), }">
-              {{item.ctl_subtitle || ""}}
-            </div>
+            <div
+              :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal'),
+              fontWeight: (item.ctl_subtitle_bold ? 'bold':'normal'), }"
+            >{{item.ctl_subtitle || ""}}</div>
           </div>
         </template>
 
         <template v-else-if="item.ctl_type === 'show_text'">
-          <div class="basic classShow" :style="{backgroundColor: item.text_bkcolor, padding: item.ctl_margin}">
-            <span class="preWrap" :style="{color: item.text_color, backgroundColor: item.text_bkcolor, fontSize: item.ctl_value_size,
+          <div
+            class="basic classShow"
+            :style="{backgroundColor: item.text_bkcolor, padding: item.ctl_margin}"
+          >
+            <span
+              class="preWrap"
+              :style="{color: item.text_color, backgroundColor: item.text_bkcolor, fontSize: item.ctl_value_size,
             fontStyle: (item.text_italic ? 'italic':'normal'), fontWeight: (item.text_bold ? 'bold':'normal'), textAlign: item.ctl_value_align, width: '100%'}"
-            >
-              {{item.ctl_value}}
-            </span>
+            >{{item.ctl_value}}</span>
           </div>
         </template>
 
@@ -59,50 +69,60 @@
         </template>
 
         <template v-else-if="item.ctl_type === 'separator'">
-          <div class="van-separator"
-            :style="{margin: item.ctl_margin, borderWidth: item.height, borderBottomStyle: item.linetype, borderColor: item.color,}">
-          </div>
+          <div
+            class="van-separator"
+            :style="{margin: item.ctl_margin, borderWidth: item.height, borderBottomStyle: item.linetype, borderColor: item.color,}"
+          ></div>
           <div class="padding-box" :style="{margin: item.ctl_margin, marginTop: '0', }"></div>
         </template>
 
         <template v-else-if="item.ctl_type == 'data_text'">
-          <div class="padding-box" :style="{margin: item.ctl_margin, padding: item.ctl_padding, }">
+          <div class="padding-box" :style="{margin: item.ctl_margin, padding: item.ctl_padding, }" v-copy>
             <div class="basic dataClass">
-              <span class="basicTitle" :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size, fontStyle: (item.ctl_title_italic ? 'italic':'normal'), 
-              fontWeight: (item.ctl_title_bold ? 'bold':'normal'), }">
-                {{item.ctl_title}}
-              </span>
-              <div :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal')
+              <span
+                class="basicTitle"
+                :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size, fontStyle: (item.ctl_title_italic ? 'italic':'normal'), 
+              fontWeight: (item.ctl_title_bold ? 'bold':'normal'), }"
+              >{{item.ctl_title}}</span>
+              <div
+                :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal')
                 ,fontWeight: (item.ctl_subtitle_bold ? 'bold':'normal'),}"
-              >
-                {{item.ctl_subtitle || ""}}
-              </div>
+              >{{item.ctl_subtitle || ""}}</div>
             </div>
             <div class="widthAll" :style="{height: item.ctl_spacing }"></div>
             <div class="basic dataClass" :style="{padding: item.isHtml ? '0' : '' }">
-              <div class="data-value" :style="{color: item.ctl_value_color, fontSize: item.ctl_value_size, fontStyle: (item.text_italic ? 'italic':'normal'),
-                fontWeight: (item.text_bold ? 'bold':'normal')}" :class="{'preWrap': item.isMul, 'widthAll': item.isHtml}">
+              <div
+                class="data-value"
+                :style="{color: item.ctl_value_color, fontSize: item.ctl_value_size, fontStyle: (item.text_italic ? 'italic':'normal'),
+                fontWeight: (item.text_bold ? 'bold':'normal')}"
+                :class="{'preWrap': item.isMul, 'widthAll': item.isHtml}"
+              >
                 <template v-if="!item.isWeb && !item.isHtml">{{item.ctl_value}}</template>
                 <template v-if="item.isWeb">
-                  <a class="urlCLass" @click="clickUrl(item.ctl_value)" :style="{color: item.ctl_value_color, fontSize: item.ctl_value_size, 
+                  <a
+                    class="urlCLass"
+                    @click="clickUrl(item.ctl_value)"
+                    :style="{color: item.ctl_value_color, fontSize: item.ctl_value_size, 
                     fontStyle: (item.ctl_value_italic ? 'italic':'normal'), fontWeight: (item.ctl_value_bold ? 'bold':'normal')}"
-                  >
-                    {{item.ctl_value}}
-                  </a>
+                  >{{item.ctl_value}}</a>
                 </template>
                 <div v-if="item.isHtml" class="edit-html-box">
                   <quill-editor
                     v-model="item.ctl_value"
                     :options="htmlOption"
-                    :disabled='true'
+                    :disabled="true"
                     ref="myQuillEditor"
-                  >
-                  </quill-editor>
+                  ></quill-editor>
                 </div>
               </div>
               <div class="flex_row">
-                <div v-waves2 v-for="(icnItem, nIndex) in item.icnArr" :key="nIndex" style="padding: 10px; border-radius: 5px"
-                  @click="clickHandler(icnItem.funcName, item)">
+                <div
+                  v-waves2
+                  v-for="(icnItem, nIndex) in item.icnArr"
+                  :key="nIndex"
+                  style="padding: 10px; border-radius: 5px"
+                  @click="clickHandler(icnItem.funcName, item)"
+                >
                   <i class="iconfont my-icon2" :class="icnItem.icn"></i>
                 </div>
               </div>
@@ -113,22 +133,27 @@
         <template v-else-if="item.ctl_type === 'data_tag'">
           <div class="padding-box" :style="{margin: item.ctl_margin, padding: item.ctl_padding, }">
             <div class="basic tag-wrap dataClass">
-              <span class="flex_row basicTitle" :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size,
-              fontStyle: (item.ctl_title_italic ? 'italic':'normal'),}">
-                {{item.ctl_title}}
-              </span>
-              <div :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal')
+              <span
+                class="flex_row basicTitle"
+                :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size,
+              fontStyle: (item.ctl_title_italic ? 'italic':'normal'),}"
+              >{{item.ctl_title}}</span>
+              <div
+                :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal')
                 ,fontWeight: (item.ctl_subtitle_bold ? 'bold':'normal'),}"
-              >
-                {{item.ctl_subtitle || ""}}
-              </div>
+              >{{item.ctl_subtitle || ""}}</div>
             </div>
             <div class="widthAll" :style="{height: item.ctl_spacing }"></div>
             <div class="basic tag-box">
-              <div class="tag-class" v-for="(tagName, tagIndex) in item.arr" :key="tagIndex" :style="{ backgroundColor: item.colorArr[tagIndex],
+              <div
+                class="tag-class"
+                v-for="(tagName, tagIndex) in item.arr"
+                :key="tagIndex"
+                :style="{ backgroundColor: item.colorArr[tagIndex],
                 color: item.ctl_value_color, fontSize: item.ctl_value_size, fontStyle: (item.ctl_value_italic ? 'italic':'normal'),
                 fontWeight: (item.ctl_value_bold ? 'bold':'normal'), marginBottom: item.ctl_spacing , marginRight: item.ctl_spacing , 
-                borderRadius: item.ctl_value_radius, paddingLeft: item.ctl_value_radius, paddingRight: item.ctl_value_radius  }">
+                borderRadius: item.ctl_value_radius, paddingLeft: item.ctl_value_radius, paddingRight: item.ctl_value_radius  }"
+              >
                 {{tagName}}
                 <!-- <div class="table_wrap"><div class="table_txt">{{tagName}}</div></div> -->
               </div>
@@ -137,25 +162,28 @@
         </template>
 
         <template v-else-if="(item.ctl_type === 'data_image')">
-          <div class="basic h140 dataClass" :style="{margin: item.ctl_margin, padding: item.ctl_padding, }">
-            <span class="basicTitle" :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size, fontStyle: (item.ctl_title_italic ? 'italic':'normal'),
+          <div
+            class="basic h140 dataClass"
+            :style="{margin: item.ctl_margin, padding: item.ctl_padding, }"
+          >
+            <span
+              class="basicTitle"
+              :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size, fontStyle: (item.ctl_title_italic ? 'italic':'normal'),
               fontWeight: (item.ctl_title_bold ? 'bold':'normal'), }"
-            >
-              {{item.ctl_title}}
-            </span>
+            >{{item.ctl_title}}</span>
             <div class="single-img-wrap">
               {{item.ctl_placeholder}}
-            <van-image
-              v-waves2
-              v-for="(image, imageIndex) in item.arr"
-              :key="imageIndex"
-              fit="cover"
-              width="50px"
-              height="50px"
-              :src="image"
-              :radius="item.image_fillet ? '5px' : '50%'"
-              @click="previewImgs(item, imageIndex)"
-            />
+              <van-image
+                v-waves2
+                v-for="(image, imageIndex) in item.arr"
+                :key="imageIndex"
+                fit="cover"
+                width="50px"
+                height="50px"
+                :src="image"
+                :radius="item.image_fillet ? '5px' : '50%'"
+                @click="previewImgs(item, imageIndex)"
+              />
             </div>
           </div>
         </template>
@@ -163,14 +191,14 @@
         <template v-else-if="(item.ctl_type === 'data_images')">
           <div class="padding-box" :style="{margin: item.ctl_margin, padding: item.ctl_padding, }">
             <div class="basic tag-wrap dataClass">
-              <span class="flex_row basicTitle" :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size, fontStyle: (item.ctl_title_italic ? 'italic':'normal'),}">
-                {{item.ctl_title}}
-              </span>
-              <div :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal')
+              <span
+                class="flex_row basicTitle"
+                :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size, fontStyle: (item.ctl_title_italic ? 'italic':'normal'),}"
+              >{{item.ctl_title}}</span>
+              <div
+                :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal')
                 ,fontWeight: (item.ctl_subtitle_bold ? 'bold':'normal'),}"
-              >
-                {{item.ctl_subtitle || ""}}
-              </div>
+              >{{item.ctl_subtitle || ""}}</div>
             </div>
             <div class="widthAll" :style="{height: item.ctl_spacing }"></div>
             <div class="flex_row images-box" v-if="item.arr.length > 0">
@@ -193,78 +221,102 @@
         <template v-else-if="(item.ctl_type === 'data_files')">
           <div class="padding-box" :style="{margin: item.ctl_margin, padding: item.ctl_padding, }">
             <div class="basic tag-wrap dataClass">
-              <span class="flex_row basicTitle" :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size,
-                fontStyle: (item.ctl_title_italic ? 'italic':'normal'),}">
-                {{item.ctl_title}}
-              </span>
-              <div :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal')
+              <span
+                class="flex_row basicTitle"
+                :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size,
+                fontStyle: (item.ctl_title_italic ? 'italic':'normal'),}"
+              >{{item.ctl_title}}</span>
+              <div
+                :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal')
                 ,fontWeight: (item.ctl_subtitle_bold ? 'bold':'normal'),}"
-              >
-                {{item.ctl_subtitle || ""}}
-              </div>
+              >{{item.ctl_subtitle || ""}}</div>
             </div>
             <div class="widthAll" :style="{height: item.ctl_spacing }"></div>
-            <template v-for="(file, fileIndex) in item.fileArr" >
-              <div class="flex_row name-box" :key="fileIndex" :style="{marginTop: item.ctl_spacing, marginBottom: item.ctl_spacing, }" >
+            <template v-for="(file, fileIndex) in item.fileArr">
+              <div
+                class="flex_row name-box"
+                :key="fileIndex"
+                :style="{marginTop: item.ctl_spacing, marginBottom: item.ctl_spacing, }"
+              >
                 <div class="name-icn-box">
                   <svg class="icon name-icn" aria-hidden="true">
-                    <use :xlink:href="file.icn"></use>
+                    <use :xlink:href="file.icn" />
                   </svg>
                 </div>
-                <div class="flex_row file-name-box" :style="{color: item.ctl_value_color, fontSize: item.ctl_value_size, fontStyle: (item.ctl_value_italic ? 'italic':'normal'), 
-                  fontWeight: (item.ctl_value_bold ? 'bold':'normal'), }">
+                <div
+                  class="flex_row file-name-box"
+                  :style="{color: item.ctl_value_color, fontSize: item.ctl_value_size, fontStyle: (item.ctl_value_italic ? 'italic':'normal'), 
+                  fontWeight: (item.ctl_value_bold ? 'bold':'normal'), }"
+                >
                   <span class="name-icn-box">
                     <span class="name-icn">{{file.name}}.{{file.type}}</span>
                   </span>
                   <!-- <span class="file-type">.{{file.type}}</span> -->
                 </div>
                 <div class="separator-box">
-                  <div class="van-separator"
+                  <div
+                    class="van-separator"
                     :style="{margin: item.ctl_value_line_margin, borderWidth: item.ctl_value_lineheight, borderBottomStyle: item.ctl_value_linetype,
-                    borderColor: item.ctl_value_linecolor,}">
-                  </div>
-                  <div class="padding-box" :style="{margin: item.ctl_value_line_margin, marginTop: '0', }"></div>
+                    borderColor: item.ctl_value_linecolor,}"
+                  ></div>
+                  <div
+                    class="padding-box"
+                    :style="{margin: item.ctl_value_line_margin, marginTop: '0', }"
+                  ></div>
                 </div>
               </div>
             </template>
           </div>
         </template>
       </div>
-
     </div>
 
-    <noContent contText="表单列" v-show="!contentShow" ></noContent>
+    <noContent contText="表单列" v-show="!contentShow"></noContent>
 
     <!-- 地图组件 -->
     <tencent-map ref="tencentMap" />
+
+    <!-- 图片预览组件 -->
+    <preview-image ref="previewImage" />
   </div>
 </template>
 
 <script>
 import noContent from "@/components/noContent";
-import tools from "@/utils/tool"
-import 'quill/dist/quill.snow.css'
-import { quillEditor } from 'vue-quill-editor'
+import tools from "@/utils/tool";
+import "quill/dist/quill.snow.css";
+import { quillEditor } from "vue-quill-editor";
 import axios from "@/api/axios";
-import { ImagePreview } from 'vant';
-import tencentMap from '@/components/tencentMap';
+import { ImagePreview } from "vant";
+import TencentMap from "@/components/TencentMap";
+import PreviewImage from "@/components/PreviewImage";
 
 export default {
   name: "formShow",
   components: {
     noContent,
     quillEditor,
-    tencentMap,
-    [ImagePreview.Component.name]: ImagePreview.Component,
+    TencentMap,
+    PreviewImage,
+    [ImagePreview.Component.name]: ImagePreview.Component
   },
   data() {
     return {
       pageTitle: "新建客户",
-      pageSet: { pageTitle: "新建客户", operation: "刷新", type: "edit", operation_url: "", style: {} },
+      pageSet: {
+        pageTitle: "新建客户",
+        operation: "刷新",
+        type: "edit",
+        operation_url: "",
+        style: {}
+      },
       template_total: "",
       hasMapBox: false,
       mapItem: { ctl_data: { value: null } },
-      imgList: [ { url: 'https://img.yzcdn.cn/vant/leaf.jpg' }, { url: 'https://img.yzcdn.cn/vant/leaf.jpg' },  ],
+      imgList: [
+        { url: "https://img.yzcdn.cn/vant/leaf.jpg" },
+        { url: "https://img.yzcdn.cn/vant/leaf.jpg" }
+      ],
       fileist: [],
       controls: [],
       contentShow: false,
@@ -276,30 +328,25 @@ export default {
         modules: {
           // 自定义菜单栏
           toolbar: {
-            container: [
-              [
-                { color: [] },
-              ]
-            ],
-          },
+            container: [[{ color: [] }]]
+          }
         }
-      },
+      }
     };
   },
-  watch: {
-  },
-  beforeRouteEnter (to, from, next) {
+  watch: {},
+  beforeRouteEnter(to, from, next) {
     next(vm => {
-      if(from.name === 'previewImage') {
-        console.log('to.meta', to.meta)
+      if (from.name === "previewImage") {
+        console.log("to.meta", to.meta);
         vm.$el.scrollTop = to.meta.scrollTop;
       }
     });
   },
   beforeRouteLeave(to, from, next) {
-    console.log('beforeRouteLeave to', to)
-    if(to.name === 'previewImage') {
-      console.log('this.$el.scrollTop', this.$el.scrollTop)
+    console.log("beforeRouteLeave to", to);
+    if (to.name === "previewImage") {
+      console.log("this.$el.scrollTop", this.$el.scrollTop);
       from.meta.scrollTop = this.$el.scrollTop;
     } else {
       to.meta.scrollTop = 0;
@@ -309,168 +356,224 @@ export default {
   methods: {
     listFilter(list) {
       const arrItems = {
-        data_mobile: [{ icn: 'icon-icon_wechat', funcName: 'smsWechat'}, { icn: 'icon-icon_message', funcName: 'smsPhone'}, { icn: 'icon-icon_phone', funcName: 'callPhone'}],
-        data_tel: [{ icn: 'icon-icon_phone', funcName: 'callPhone'}],
-        data_wechat: [{ icn: 'icon-icon_wechat', funcName: 'smsWechat'}],
-        data_qq: [{ icn: 'icon-icon_qq', funcName: 'smsQq'}],
-        data_email: [{ icn: 'icon-mail', funcName: 'smsWechat'}],
-        data_address: [{ icn: 'icon-dizhi', funcName: 'onMapBox'}],
-        data_website: [{ icn: 'icon-icon_link', funcName: 'clickUrl'}],
+        data_mobile: [
+          { icn: "icon-icon_wechat", funcName: "smsWechat" },
+          { icn: "icon-icon_message", funcName: "smsPhone" },
+          { icn: "icon-icon_phone", funcName: "callPhone" }
+        ],
+        data_tel: [{ icn: "icon-icon_phone", funcName: "callPhone" }],
+        data_wechat: [{ icn: "icon-icon_wechat", funcName: "smsWechat" }],
+        data_qq: [{ icn: "icon-icon_qq", funcName: "smsQq" }],
+        data_email: [{ icn: "icon-mail", funcName: "smsWechat" }],
+        data_address: [{ icn: "icon-dizhi", funcName: "onMapBox" }],
+        data_website: [{ icn: "icon-icon_link", funcName: "clickUrl" }]
       };
       list.map(e => {
         // console.log("e.ctl_type ", e.ctl_type );
-        if(!e.isFirst && e.ctl_value && (e.ctl_type === "data_tag" || e.ctl_type === "data_image" || e.ctl_type === "data_images" || e.ctl_type === "data_files")) {
+        if (
+          !e.isFirst &&
+          e.ctl_value &&
+          (e.ctl_type === "data_tag" ||
+            e.ctl_type === "data_image" ||
+            e.ctl_type === "data_images" ||
+            e.ctl_type === "data_files")
+        ) {
           // console.log("e.ctl_value_bkcolor ", e.ctl_value_bkcolor );
           const sign = e.ctl_type === "data_tag" ? "," : ";";
-          e.arr = e.ctl_value.split(sign) || (e.ctl_value && [e.ctl_value]) || [];
+          e.arr =
+            e.ctl_value.split(sign) || (e.ctl_value && [e.ctl_value]) || [];
           e.arr = e.arr.filter(e => e != "");
 
-          let icn_space = e.ctl_spacing || '0px';
+          let icn_space = e.ctl_spacing || "0px";
           icn_space = parseInt(icn_space) > 10 ? parseInt(icn_space) : 10;
-          e.icn_space = icn_space+ 'px';
-          if(e.ctl_type === "data_image" && e.arr.length > 0 ) {
+          e.icn_space = icn_space + "px";
+          if (e.ctl_type === "data_image" && e.arr.length > 0) {
             // e.arr = e.arr.map(img => {
             //   return (img && { url: img });
             // })
-          } else if(e.ctl_type === "data_tag") {
-            e.colorArr = e.ctl_value_bkcolor.split(sign) || (e.ctl_value_bkcolor && [e.ctl_value_bkcolor]) || [];
-            e.colorArr = e.colorArr.sort(() =>  Math.random() - 0.5);
-            e.colorArr = e.colorArr.sort(() =>  Math.random() - 0.5);
-          } else if(e.ctl_type === "data_files" && e.arr.length > 0 ) {
-            const icnMap = 
-            {
-              'xls': '#icon-yunpanlogo-', 'xlsx': '#icon-yunpanlogo-', 'ppt': '#icon-yunpanlogo-1', 'pptx': '#icon-yunpanlogo-1',
-              'jpg': '#icon-yunpanlogo-14', 'png': '#icon-yunpanlogo-14', 'jpeg': '#icon-yunpanlogo-14', 'gif': '#icon-yunpanlogo-14',
-              'doc': '#icon-yunpanlogo-2', 'docx': '#icon-yunpanlogo-2', 'txt': '#icon-yunpanlogo-8', 'pdf': '#icon-yunpanlogo-15',
+          } else if (e.ctl_type === "data_tag") {
+            e.colorArr =
+              e.ctl_value_bkcolor.split(sign) ||
+              (e.ctl_value_bkcolor && [e.ctl_value_bkcolor]) ||
+              [];
+            e.colorArr = e.colorArr.sort(() => Math.random() - 0.5);
+            e.colorArr = e.colorArr.sort(() => Math.random() - 0.5);
+          } else if (e.ctl_type === "data_files" && e.arr.length > 0) {
+            const icnMap = {
+              xls: "#icon-yunpanlogo-",
+              xlsx: "#icon-yunpanlogo-",
+              ppt: "#icon-yunpanlogo-1",
+              pptx: "#icon-yunpanlogo-1",
+              jpg: "#icon-yunpanlogo-14",
+              png: "#icon-yunpanlogo-14",
+              jpeg: "#icon-yunpanlogo-14",
+              gif: "#icon-yunpanlogo-14",
+              doc: "#icon-yunpanlogo-2",
+              docx: "#icon-yunpanlogo-2",
+              txt: "#icon-yunpanlogo-8",
+              pdf: "#icon-yunpanlogo-15"
             };
             // e.arr.push('1/未知文件类型克.己复礼时间时间.浪费数量看.md')
-            e.fileArr = e.arr.map(name => name.split('/')[name.split('/').length - 1]) || [];
+            e.fileArr =
+              e.arr.map(name => name.split("/")[name.split("/").length - 1]) ||
+              [];
             e.fileArr = e.fileArr.map(file => {
-              const type = file.split('.')[file.split('.').length - 1] || '';
-              let name = file.replace(type, '');
-              let index = name .lastIndexOf(".");  
+              const type = file.split(".")[file.split(".").length - 1] || "";
+              let name = file.replace(type, "");
+              let index = name.lastIndexOf(".");
               name = name.substring(0, index);
-              const icn = icnMap[type] || '#icon-yunpanlogo-3';
-              console.log('{ name, type, icn }', { name, type, icn });
+              const icn = icnMap[type] || "#icon-yunpanlogo-3";
+              console.log("{ name, type, icn }", { name, type, icn });
               return { name, type, icn };
-            })
+            });
             // console.log("e.fileArr ", e.fileArr );
           } else if (e.ctl_type === "data_images") {
             const image_columns = e.image_columns || 1;
-            let ctl_spacing = e.ctl_spacing || '0px';
+            let ctl_spacing = e.ctl_spacing || "0px";
             // const image_columns = 2; // test
             // e.image_columns = image_columns; // test
 
-            const marginArr = e.ctl_margin.split(" ")
-            const paddingArr = e.ctl_padding.split(" ")
-            console.log("e.marginArr  paddingArr。。。。", marginArr, paddingArr)
+            const marginArr = e.ctl_margin.split(" ");
+            const paddingArr = e.ctl_padding.split(" ");
+            console.log(
+              "e.marginArr  paddingArr。。。。",
+              marginArr,
+              paddingArr
+            );
             let marginRight = marginArr[1];
             let paddingRight = paddingArr[1];
             let marginLeft = marginArr[3];
             let paddingLeft = paddingArr[3];
-            console.log("marginRight, paddingRight 。。。。left", marginRight, paddingRight, left)
+            console.log(
+              "marginRight, paddingRight 。。。。left",
+              marginRight,
+              paddingRight,
+              left
+            );
             // 10rem 375px marginRight
-            ctl_spacing = ctl_spacing.replace('px', '');
-            marginRight = marginRight.replace('px', '');
-            paddingRight = paddingRight.replace('px', '');
-            marginLeft = marginLeft.replace('px', '');
-            paddingLeft = paddingLeft.replace('px', '');
+            ctl_spacing = ctl_spacing.replace("px", "");
+            marginRight = marginRight.replace("px", "");
+            paddingRight = paddingRight.replace("px", "");
+            marginLeft = marginLeft.replace("px", "");
+            paddingLeft = paddingLeft.replace("px", "");
             let left = parseInt(marginLeft) + parseInt(paddingLeft);
             let right = parseInt(marginRight) + parseInt(paddingRight);
             ctl_spacing = parseInt(ctl_spacing) > 0 ? parseInt(ctl_spacing) : 0;
             // right = right > ctl_spacing ? (right - ctl_spacing) : 0; // right大于ctl_spacing则取差值，否则为0.因为一行的最后一个图片会占用ctl_spacing
             left = left > 0 ? left : 0;
             right = right > 0 ? right : 0;
-            console.log("ctl_spacing 。。。。", ctl_spacing)
-            console.log("right 。。。。", right)
-            console.log("left 。。。。", left)
+            console.log("ctl_spacing 。。。。", ctl_spacing);
+            console.log("right 。。。。", right);
+            console.log("left 。。。。", left);
             ctl_spacing = ctl_spacing * 0.01334;
-            right = right * 0.01334 ;
-            left = left * 0.01334 ;
-            const imgWidth = ((10 - left - right - 0.02) - ((image_columns- 1) * ctl_spacing)) / image_columns;
+            right = right * 0.01334;
+            left = left * 0.01334;
+            const imgWidth =
+              (10 - left - right - 0.02 - (image_columns - 1) * ctl_spacing) /
+              image_columns;
 
-            console.log("e.ctl_margin 。。。。", e.ctl_margin)
-            console.log("e.ctl_padding 。。。。", e.ctl_padding)
-            e.imgWidth = imgWidth + 'rem';
+            console.log("e.ctl_margin 。。。。", e.ctl_margin);
+            console.log("e.ctl_padding 。。。。", e.ctl_padding);
+            e.imgWidth = imgWidth + "rem";
           }
-        } else if(!e.isFirst && e.ctl_type === "data_text" || e.ctl_type === "data_mobile" || e.ctl_type === "data_wechat" || e.ctl_type === "data_qq"
-            || e.ctl_type === "data_email" || e.ctl_type === "data_website" || e.ctl_type === "data_email" || e.ctl_type === "data_address"
-            || e.ctl_type === "data_multext" || e.ctl_type === "data_html" || e.ctl_type === "data_tel") {
-            e.icnArr = arrItems[e.ctl_type] || [];
-            let icn_spacing = e.ctl_spacing || '0px';
-            icn_spacing = icn_spacing.replace('px', '');
-            e.icn_spacing = (parseInt(icn_spacing) > 5 ? parseInt(icn_spacing) * 2 : 10) + 'px';
-            if(e.ctl_type === "data_website") {
-              e.isWeb = true;
-            } else if(e.ctl_type === "data_multext") {
-              e.isMul = true;
-            } else if(e.ctl_type === "data_html") {
-              e.isHtml = true;
-            }
-            e.ctl_type = "data_text";
+        } else if (
+          (!e.isFirst && e.ctl_type === "data_text") ||
+          e.ctl_type === "data_mobile" ||
+          e.ctl_type === "data_wechat" ||
+          e.ctl_type === "data_qq" ||
+          e.ctl_type === "data_email" ||
+          e.ctl_type === "data_website" ||
+          e.ctl_type === "data_email" ||
+          e.ctl_type === "data_address" ||
+          e.ctl_type === "data_multext" ||
+          e.ctl_type === "data_html" ||
+          e.ctl_type === "data_tel"
+        ) {
+          e.icnArr = arrItems[e.ctl_type] || [];
+          let icn_spacing = e.ctl_spacing || "0px";
+          icn_spacing = icn_spacing.replace("px", "");
+          e.icn_spacing =
+            (parseInt(icn_spacing) > 5 ? parseInt(icn_spacing) * 2 : 10) + "px";
+          if (e.ctl_type === "data_website") {
+            e.isWeb = true;
+          } else if (e.ctl_type === "data_multext") {
+            e.isMul = true;
+          } else if (e.ctl_type === "data_html") {
+            e.isHtml = true;
           }
-          e.ctl_margin = this.pxToRem(e.ctl_margin);
-          e.ctl_padding = this.pxToRem(e.ctl_padding);
-          e.ctl_bar_height = this.pxToRem(e.ctl_bar_height);
-          e.ctl_bar_width = this.pxToRem(e.ctl_bar_width);
-          e.ctl_spacing = this.pxToRem(e.ctl_spacing);
-          e.ctl_title_size = this.pxToRem(e.ctl_title_size);
-          e.ctl_subtitle_size = this.pxToRem(e.ctl_subtitle_size);
-          e.ctl_value_size = this.pxToRem(e.ctl_value_size);
-          e.height = this.pxToRem(e.height);
-          e.ctl_value_radius = this.pxToRem(e.ctl_value_radius);
-          e.ctl_value_line_margin = this.pxToRem(e.ctl_value_line_margin);
-          e.ctl_value_lineheight = this.pxToRem(e.ctl_value_lineheight);
-          e.isFirst = true;
-          // console.log("e.arr ", e.arr );
+          e.ctl_type = "data_text";
+        }
+        e.ctl_margin = this.pxToRem(e.ctl_margin);
+        e.ctl_padding = this.pxToRem(e.ctl_padding);
+        e.ctl_bar_height = this.pxToRem(e.ctl_bar_height);
+        e.ctl_bar_width = this.pxToRem(e.ctl_bar_width);
+        e.ctl_spacing = this.pxToRem(e.ctl_spacing);
+        e.ctl_title_size = this.pxToRem(e.ctl_title_size);
+        e.ctl_subtitle_size = this.pxToRem(e.ctl_subtitle_size);
+        e.ctl_value_size = this.pxToRem(e.ctl_value_size);
+        e.height = this.pxToRem(e.height);
+        e.ctl_value_radius = this.pxToRem(e.ctl_value_radius);
+        e.ctl_value_line_margin = this.pxToRem(e.ctl_value_line_margin);
+        e.ctl_value_lineheight = this.pxToRem(e.ctl_value_lineheight);
+        e.isFirst = true;
+        // console.log("e.arr ", e.arr );
         return e;
       });
-      console.log('listFilter list', list)
+      console.log("listFilter list", list);
       return list;
     },
-    pxToRem(string='') {
+    pxToRem(string = "") {
       // console.log('string', string)
-      if(!string || typeof string !== 'string' || string.indexOf('rem') !== -1) return string;
-      let strArr = string.split(' ') || string;
-      strArr = strArr.map(e => e.replace('px', ''));
-      strArr = strArr.map(e => (parseInt(e) > 2 ? (parseInt(e) * 0.01334  + 'rem') : (e + 'px') ));
+      if (!string || typeof string !== "string" || string.indexOf("rem") !== -1)
+        return string;
+      let strArr = string.split(" ") || string;
+      strArr = strArr.map(e => e.replace("px", ""));
+      strArr = strArr.map(e =>
+        parseInt(e) > 2 ? parseInt(e) * 0.01334 + "rem" : e + "px"
+      );
       // console.log('pxToRem strArr', strArr.join(' '));
-      return strArr.join(' ');
+      return strArr.join(" ");
     },
     previewImgs(item, startPosition) {
-      this.$router.push({
-        name: "previewImage",
-        params: { images: item.arr, startPosition, previewSave: item.image_saveas },
+      this.$refs["previewImage"].show({
+        images: item.arr,
+        startPosition,
+        previewSave: item.image_saveas
       });
     },
-    getStrLen(str){
+    getStrLen(str) {
       let len = 0;
-      for (let i=0; i<str.length; i++) { 
-        let c = str.charCodeAt(i); 
-        //单字节加1 
-        if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) { 
-          len++; 
-        } 
-        else { 
-          len+=2; 
-        } 
-      } 
+      for (let i = 0; i < str.length; i++) {
+        let c = str.charCodeAt(i);
+        //单字节加1
+        if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
+          len++;
+        } else {
+          len += 2;
+        }
+      }
       return len;
     },
     getRandomColor() {
-      const color = '#'+('00000'+ (Math.random()*0x1000000<<0).toString(16)).substr(-6); 
-      return color !== '#ffffff' ? color : this.getRandomColor();
+      const color =
+        "#" +
+        ("00000" + ((Math.random() * 0x1000000) << 0).toString(16)).substr(-6);
+      return color !== "#ffffff" ? color : this.getRandomColor();
     },
     loadiframe() {
-      window.addEventListener('message', function(event) {
-        console.log("tencent event", event);
+      window.addEventListener(
+        "message",
+        function(event) {
+          console.log("tencent event", event);
           // 接收位置信息，用户选择确认位置点后选点组件会触发该事件，回传用户的位置信息
           var loc = event.data;
-          if (loc && loc.module == 'locationPicker') {//防止其他应用也会向该页面post信息，需判断module是否为'locationPicker'
-            console.log('location', loc);
+          if (loc && loc.module == "locationPicker") {
+            //防止其他应用也会向该页面post信息，需判断module是否为'locationPicker'
+            console.log("location", loc);
           }
-      }, false);
-
+        },
+        false
+      );
     },
     filesReader(file, detail) {
       console.log("filesReader", file, detail);
@@ -479,13 +582,13 @@ export default {
     operationHandler() {
       const { pageSet } = this;
       console.log("pageSet", pageSet);
-      if(pageSet.operation === '编辑') {
+      if (pageSet.operation === "编辑") {
         window.location.href = pageSet.operation_url || window.location.href;
       } else {
         this.reload();
       }
     },
-    onEditorFocus(event) { 
+    onEditorFocus(event) {
       // event.enable(false);
     },
     onMapBox(item) {
@@ -497,27 +600,27 @@ export default {
     },
 
     clickHandler(funcName, param) {
-      console.log('funcName', funcName, 'param', param);
+      console.log("funcName", funcName, "param", param);
       this[funcName](param);
     },
 
     smsWechat(item) {
-      console.log('smsWechat')
+      console.log("smsWechat");
       this.$smsWechat(item.ctl_value);
     },
 
     smsQq(item) {
-      console.log('smsWechat')
+      console.log("smsWechat");
       this.$smsWechat(item.ctl_value);
     },
 
     smsPhone(item) {
-      console.log('smsPhone')
+      console.log("smsPhone");
       this.$callPhone(item.ctl_value);
     },
 
     callPhone(item) {
-      console.log('callPhone')
+      console.log("callPhone");
       this.$callPhone(item.ctl_value);
     },
 
@@ -530,31 +633,36 @@ export default {
     },
 
     toMapNav(keyword) {
-      console.log('toMapNav')
+      console.log("toMapNav");
       this.$mapNav(keyword);
     },
 
     async getFormList(herf) {
       //获取首页数据
-      console.log('getFormList window', window)
-      console.log('getFormList navigator.userAgent', window.navigator.userAgent)
+      console.log("getFormList window", window);
+      console.log(
+        "getFormList navigator.userAgent",
+        window.navigator.userAgent
+      );
       let u = window.navigator.userAgent;
       var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-      console.log('getFormList isiOS', isiOS)
+      console.log("getFormList isiOS", isiOS);
       this.$openIndicator();
       let res = await this.$http.formList(herf);
       console.log("formList res", res);
       if (res.success === true) {
         this.controls = res.data.controls;
         this.pageSet.pageTitle = res.data.title;
-        document.title = res.data.title || '通用表单';
+        document.title = res.data.title || "通用表单";
         this.pageSet.operation = res.data.operation;
         this.pageSet.operation_url = res.data.operation_url;
-        this.contentShow=true;
-        this.$nextTick(()=>{  //监听数据渲染完再关闭loading
-          setTimeout(()=>{  //第二层延迟
+        this.contentShow = true;
+        this.$nextTick(() => {
+          //监听数据渲染完再关闭loading
+          setTimeout(() => {
+            //第二层延迟
             this.$closeIndicator();
-          },300)
+          }, 300);
         });
       } else {
         this.$closeIndicator();
@@ -562,18 +670,22 @@ export default {
     },
     makeValue(controls) {
       controls.map(e => {
-        if(e.ctl_type === 'group' || e.ctl_type === 'show_text' ||e.ctl_type === 'show_image') {
-          if(!e.ctl_value) e.ctl_value = "";
-        } else if (e.ctl_type === 'separator') {
-        } else if (e.ctl_type === 'tag') {
+        if (
+          e.ctl_type === "group" ||
+          e.ctl_type === "show_text" ||
+          e.ctl_type === "show_image"
+        ) {
+          if (!e.ctl_value) e.ctl_value = "";
+        } else if (e.ctl_type === "separator") {
+        } else if (e.ctl_type === "tag") {
           e.arr = [];
         } else {
-          if(!e.ctl_data) e.ctl_data = {};
-          if(!e.ctl_data.value) e.ctl_data.value = "";
+          if (!e.ctl_data) e.ctl_data = {};
+          if (!e.ctl_data.value) e.ctl_data.value = "";
         }
         return e;
       });
-      return controls
+      return controls;
     },
     reload() {
       //刷新
@@ -581,18 +693,15 @@ export default {
     }
   },
   created() {
-    console.log('created....................................')
-    console.log('window.location.href', window.location.href)
+    console.log("created....................................");
+    console.log("window.location.href", window.location.href);
     this.getFormList(window.location.href);
-    
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 
 <style lang="scss">
-
 // <style lang="scss" scoped>
 /*共用样式 s*/
 @mixin flexS {
@@ -661,9 +770,8 @@ export default {
 
 /*共用样式 e*/
 
-
 .form {
-  height:100%;
+  height: 100%;
   .mt_1 {
     // margin-top: 1px;
   }
@@ -704,7 +812,7 @@ export default {
       border-radius: 3px;
       text-align: left;
       text-overflow: ellipsis;
-      white-space:nowrap;
+      white-space: nowrap;
       overflow: hidden;
     }
     .page-title-right {
@@ -794,7 +902,7 @@ export default {
     border-bottom: 1px dotted #ddd;
   }
 
-  .padding-box{
+  .padding-box {
     // width: 100%;
     box-sizing: border-box;
   }
@@ -836,7 +944,7 @@ export default {
         display: table-cell;
         vertical-align: middle;
         text-overflow: ellipsis;
-        white-space:nowrap;
+        white-space: nowrap;
         overflow: hidden;
       }
     }
@@ -853,7 +961,7 @@ export default {
         // max-width: 490px;
         text-align: left;
         text-overflow: ellipsis;
-        white-space:nowrap;
+        white-space: nowrap;
         overflow: hidden;
       }
       .file-type {
@@ -861,7 +969,7 @@ export default {
       }
     }
   }
-  
+
   .h140 {
     // height: 140px;
     .basicTitle {
@@ -881,7 +989,7 @@ export default {
       text-align: right;
       color: #333;
       text-overflow: ellipsis;
-      white-space: nowrap;  
+      white-space: nowrap;
     }
     .tipNum {
       position: relative;
@@ -944,7 +1052,7 @@ export default {
       font-size: 46px;
       color: #690;
     }
-    .icon-f-box{
+    .icon-f-box {
       display: inline-block;
       width: 56px;
       height: 56px;
@@ -953,19 +1061,18 @@ export default {
       margin-right: 16px;
       text-align: center;
       line-height: 56px;
-      .upload-f-icon{
+      .upload-f-icon {
         font-size: 40px;
         color: #fff;
       }
     }
-
   }
 
   .h90 {
     height: 88px;
     border-bottom: 0.2em solid #ddd;
     padding: 0;
-    .comboxTitle{
+    .comboxTitle {
       font-size: 32px;
       columns: #333;
     }
@@ -980,14 +1087,14 @@ export default {
   }
 
   .edit-html-box {
-    position: 'relative';
+    position: "relative";
     width: 100%;
-    font-size: '30px';
+    font-size: "30px";
     // min-height: 400px;
   }
 
   .map-box {
-    position: 'relative';
+    position: "relative";
     width: 100%;
     height: calc(100vh);
     .map-bottom {
@@ -1044,7 +1151,6 @@ export default {
     background: #fff;
     z-index: 22222;
   }
-  
 
   ::placeholder {
     font-size: 32px;
@@ -1090,7 +1196,6 @@ export default {
     text-align: center;
   }
 }
-
 </style>
 
 
@@ -1113,7 +1218,6 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-
 
 .form {
   font-family: -apple-system-font, sans-serif;
@@ -1139,10 +1243,12 @@ export default {
     color: #333;
     text-align: left;
   }
-  .van-picker__cancel, .van-picker__confirm {
+  .van-picker__cancel,
+  .van-picker__confirm {
     color: #690;
   }
-  .van-uploader__preview-image, .van-uploader__upload {
+  .van-uploader__preview-image,
+  .van-uploader__upload {
     width: 105px;
     height: 105px;
   }
@@ -1203,7 +1309,8 @@ export default {
     .van-uploader {
       margin-left: 20px;
     }
-    .van-uploader__preview-image, .van-uploader__upload {
+    .van-uploader__preview-image,
+    .van-uploader__upload {
       width: 50px;
       height: 50px;
       border-radius: 50%;
@@ -1231,7 +1338,7 @@ export default {
         font-size: 17px;
         color: #690;
       }
-      .van-field__clear::before{
+      .van-field__clear::before {
         content: "清空";
       }
       .van-field__word-limit {
@@ -1273,8 +1380,6 @@ export default {
   .ql-editor {
     padding: 0;
   }
-
-
 }
 
 .icon {
@@ -1286,9 +1391,6 @@ export default {
   overflow: hidden;
 }
 
-.van-image-preview__image {
-  margin-top: 44px;
-}
 .van-image-preview__index {
   top: 0;
   left: 0;

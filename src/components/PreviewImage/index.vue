@@ -1,87 +1,75 @@
 <template>
-  <div>
+  <van-popup v-model="visible" position="bottom" :style="{zIndex: 3000}">
     <div class="flex_bewteen preview-savebox">
-      <div v-waves2 class="table_wrap left" @click="$goBack();">
+      <div v-waves2 class="table_wrap left" @click="hide">
         <i class="table_txt iconfont icon-icon_left"></i>
       </div>
       <div class="table_wrap">
-        <div class="table_txt page-title">
-          {{ imgIndex + 1 }}/{{ previewImages.length }}
-        </div>
+        <div class="table_txt page-title">{{ imgIndex + 1 }}/{{ previewImages.length }}</div>
       </div>
-      <div v-waves2 class="mt_1 page-title page-title-right" @click="saveImage(previewImages[imgIndex])">
+      <div
+        v-waves2
+        class="mt_1 page-title page-title-right"
+        @click="saveImage(previewImages[imgIndex])"
+      >
         <span>{{previewSave ? '保存' : ''}}</span>
       </div>
     </div>
     <div class="txt-box" v-if="previewImages.length > 1">
       <div class="txt">左右滑动切换图片</div>
     </div>
-  </div>
+    <van-image-preview
+      v-model="visible"
+      :images="previewImages"
+      @change="onPreviewChange"
+      :show-index="false"
+      :start-position="startPosition"
+    ></van-image-preview>
+  </van-popup>
 </template>
 
 <script>
-import { ImagePreview } from 'vant';
+import { ImagePreview } from "vant";
 
 export default {
   name: "previewImage",
   components: {
-    [ImagePreview.Component.name]: ImagePreview.Component,
+    [ImagePreview.Component.name]: ImagePreview.Component
   },
   data() {
     return {
+      visible: false,
       pageTitle: "新建客户",
       previewShow: false,
       previewSave: false,
       startIndex: 0,
       previewImages: [],
       imgIndex: 0,
-      instance: null,
+      startPosition: 0
     };
   },
-  beforeRouteLeave (to, from, next) {
-    console.log('this.instance', this.instance)
-    this.instance.close();
-    next();
-  },
+
   methods: {
+    show(params) {
+      this.visible = true;
+
+      const { images, startPosition, previewSave } = params;
+      this.previewSave = previewSave;
+      this.previewImages = images;
+      this.startPosition = this.imgIndex = startPosition;
+    },
+    hide() {
+      this.visible = false;
+    },
     saveImage(url) {
-      if(!this.previewSave) return;
-      console.log('saveImage');
+      if (!this.previewSave) return;
+      console.log("saveImage");
       this.$saveImage(url);
     },
     onPreviewChange(index) {
-      console.log('onPreviewChange index', index)
+      console.log("onPreviewChange index", index);
       this.imgIndex = index || 0;
-    },
-    clickUrl(item) {
-      this.$clickUrl(item.ctl_value);
-    },
-
-
-    previewImgs(item, startPosition) {
-      // console.log('previewImg', item.arr)
-      // this.previewImages = item.arr;
-      // this.startIndex = startPosition;
-      this.previewShow = true;
-      // this.previewSave = item.image_saveas;
-      // console.log('previewImg', this.previewShow)
-      // this.onPreviewChange(startPosition);
-      ImagePreview({images: item.arr, startPosition, showIndex: false, onChange: e => this.onPreviewChange(e),  });
-      // this.$nextTick(()=>{
-      //   this.previewShow = true;
-      // });
-    },
-
-
-  },
-  created() {
-    console.log('this.$route', this.$route);
-    const { images, startPosition, previewSave } = this.$route.params;
-    this.instance = ImagePreview({images, startPosition, showIndex: false, onChange: e => this.onPreviewChange(e), asyncClose: true, });
-    this.previewSave = previewSave;
-    this.previewImages = images;
-  },
-  mounted() {
+    }
   }
 };
 </script>
@@ -105,7 +93,7 @@ export default {
   box-sizing: border-box;
   height: 88px;
   width: 100vw;
-  background: #1b1b1b;
+  background: rgba(0, 0, 0, 0.3);
   z-index: 3000;
   .left {
     @include flexC;
@@ -125,7 +113,7 @@ export default {
     border-radius: 3px;
     text-align: left;
     text-overflow: ellipsis;
-    white-space:nowrap;
+    white-space: nowrap;
     overflow: hidden;
   }
   .page-title-right {
@@ -137,16 +125,15 @@ export default {
 }
 
 .txt-box {
-  position: absolute;
+  position: fixed;
   bottom: 50px;
   left: 0;
   width: 100vw;
   z-index: 3000;
   .txt {
     @include flexC;
-    font-size:30px;
+    font-size: 30px;
     color: #555555;
   }
 }
-
 </style>
