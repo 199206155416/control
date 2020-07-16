@@ -2,7 +2,11 @@
   <div class="form">
     <div
       v-show="contentShow"
-      :style="{backgroundColor: pageSet.style.ctl_bkcolor, margin: pageSet.style.ctl_margin, padding: pageSet.style.ctl_padding, }"
+      :style="{ 
+        backgroundColor: pageSet.style.ctl_bkcolor, 
+        margin: pageSet.style.ctl_margin, 
+        padding: pageSet.style.ctl_padding, 
+      }"
     >
       <div class="zhanwei"></div>
       <page-header :pageSet="pageSet" />
@@ -97,7 +101,6 @@ export default {
   },
   data() {
     return {
-      pageTitle: "新建客户",
       pageSet: {
         pageTitle: "新建客户",
         operation: "刷新",
@@ -105,28 +108,10 @@ export default {
         operation_url: "",
         style: {}
       },
-      template_total: "",
-      hasMapBox: false,
-      mapItem: { ctl_data: { value: null } },
-      imgList: [
-        { url: "https://img.yzcdn.cn/vant/leaf.jpg" },
-        { url: "https://img.yzcdn.cn/vant/leaf.jpg" }
-      ],
+
       fileist: [],
       controls: [],
-      contentShow: false,
-      htmlOption: {
-        theme: "snow", //注意样式问题
-        placeholder: "",
-        debug: false,
-        readOnly: true,
-        modules: {
-          // 自定义菜单栏
-          toolbar: {
-            container: [[{ color: [] }]]
-          }
-        }
-      }
+      contentShow: false
     };
   },
 
