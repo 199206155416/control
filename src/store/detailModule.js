@@ -2,6 +2,7 @@ const detailModule = {
   state: () => ({
     copy: false,
     hidden_number: false,
+    edit: false
   }),
   mutations: {
     changeCopy(state, bool) {
@@ -10,6 +11,10 @@ const detailModule = {
 
     changeHiddenNumber(state, bool) {
       state.hidden_number = !!bool
+    },
+
+    changeEdit(state, bool) {
+      state.edit = !!bool
     }
   },
   actions: {

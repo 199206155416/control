@@ -131,13 +131,13 @@ export default {
     next();
   },
   methods: {
-    ...mapMutations(["changeCopy", "changeHiddenNumber"]),
+    ...mapMutations(['changeCopy', 'changeHiddenNumber', 'changeEdit']),
     listFilter(list) {
       const arrItems = {
         data_mobile: [
-          { icn: "icon-icon_wechat", funcName: "smsWechat" },
-          { icn: "icon-icon_message", funcName: "smsPhone" },
-          { icn: "icon-icon_phone", funcName: "callPhone" }
+          { icn: 'icon-icon_wechat', funcName: 'smsWechat' },
+          { icn: 'icon-icon_message', funcName: 'smsPhone' },
+          { icn: 'icon-icon_phone', funcName: 'callPhone' }
         ],
         data_tel: [{ icn: "icon-icon_phone", funcName: "callPhone" }],
         data_wechat: [{ icn: "icon-icon_wechat", funcName: "smsWechat" }],
@@ -384,7 +384,7 @@ export default {
       this.$openIndicator();
       let res = await this.$http.formList(herf);
       if (res.success === true) {
-        const { copy, hidden_number, margin, bkcolor } = res.data
+        const { copy, hidden_number, edit, margin, bkcolor } = res.data
 
         if (copy) {
           this.changeCopy(true)
@@ -392,6 +392,10 @@ export default {
 
         if (hidden_number) {
           this.changeHiddenNumber(true)
+        }
+
+        if (edit) {
+          this.changeEdit(true)
         }
 
         this.pageStyle = {
