@@ -85,6 +85,13 @@ export default {
   align-items: center;
   justify-content: flex-start;
 }
+.flex_bewteen {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
 .preview-savebox {
   position: fixed;
   top: 0;

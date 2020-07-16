@@ -10,7 +10,7 @@ let URL='http://m.ixuechuang.com';  //接口地址基础路径
 
 const service = axios.create({
   // baseURL: process.env.NODE_ENV==='production'? URL : '/api', // url = base url + request url
-  baseURL: URL, // url = base url + request url
+  // baseURL: URL, // url = base url + request url
   timeout: 60000, // request timeout
 })
 

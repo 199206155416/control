@@ -15,7 +15,7 @@
             src="https://3gimg.qq.com/lightmap/components/locationCluster/image/arrow.png"
           />
           <div class="nav-txt">到这里</div>
-        </div>-->
+        </div> -->
       </div>
       <div class="map-item" id="getAddress"></div>
     </div>
@@ -34,12 +34,12 @@ export default {
   },
 
   methods: {
-    init(center="39.916527, 116.397128") {
+    init({ lng = "39.916527", lat = "116.397128" }) {
       this.map = new qq.maps.Map(document.getElementById("getAddress"), {
         disableDefaultUI: true,
         zoom: 13,
         // 地图的中心地理坐标。
-        center: eval(`new qq.maps.LatLng(${center})`)
+        center: new qq.maps.LatLng(lat, lng)
       });
 
       var anchor = new qq.maps.Point(13, 36),
@@ -60,40 +60,34 @@ export default {
       });
     },
 
-    onMapBox(item) {
-      const keyword = item.ctl_value ? item.ctl_value : "广场";
-      const reg = /.+?(省|市|自治区|自治州|县|区)/g;
-      console.log("keyword", keyword);
-      const addressArr = keyword.match(reg);
-      console.log("addressArr", addressArr);
-      console.log("addressArr", addressArr[1].indexOf("市"));
-      let city = addressArr.filter(e => e.indexOf("市") !== -1);
-      city = (city && city.join("").replace("市", "")) || "";
+    async onMapBox(item) {
+      const keyword = item.ctl_value;
+      
+      if (!item.ctl_value) {
+        this.$toast("没有位置信息");
+        return;
+      }
 
-      console.log("。。。。。。。。。。。 city", city);
+      const data = await this.$map.geocoder({ address: keyword });
 
       this.hasMapBox = true;
       this.mapItem = item;
 
-      this.$nextTick(() => {
-        this.init();
-      });
+      if (data.status == 0) {
+        this.$nextTick(() => {
+          this.init({
+            lng: data.result.location.lng,
+            lat: data.result.location.lat
+          });
+        });
+      } else {
+        this.$toast("没有没办法定位到具体信息");
+        this.$nextTick(() => {
+          this.init();
+        });
+      }
     },
-    loadiframe() {
-      window.addEventListener(
-        "message",
-        function(event) {
-          console.log("tencent event", event);
-          // 接收位置信息，用户选择确认位置点后选点组件会触发该事件，回传用户的位置信息
-          var loc = event.data;
-          if (loc && loc.module == "locationPicker") {
-            //防止其他应用也会向该页面post信息，需判断module是否为'locationPicker'
-            console.log("location", loc);
-          }
-        },
-        false
-      );
-    },
+    
     hideMapBox() {
       this.hasMapBox = false;
     },

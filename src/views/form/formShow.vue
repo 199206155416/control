@@ -5,269 +5,43 @@
       :style="{backgroundColor: pageSet.style.ctl_bkcolor, margin: pageSet.style.ctl_margin, padding: pageSet.style.ctl_padding, }"
     >
       <div class="zhanwei"></div>
-      <header>
-        <div class="flex_bewteen">
-          <div v-waves2 class="table_wrap left" @click="$goBack();">
-            <i class="table_txt iconfont icon-icon_left"></i>
-            <div class="table_txt">返回</div>
-          </div>
-          <div class="table_wrap">
-            <div class="table_txt page-title vant-f15">{{pageSet.pageTitle}}</div>
-          </div>
-          <div
-            v-waves2
-            class="mt_1 page-title page-title-right vant-f15"
-            @click="operationHandler"
-          >{{pageSet.operation}}</div>
-        </div>
-      </header>
+      <page-header :pageSet="pageSet" />
 
       <div v-for="(item,index) in listFilter(controls)" :key="index">
-        <template v-if="item.ctl_type === 'group'">
-          <div
-            class="basic classGroup"
-            :style="{backgroundColor: item.ctl_bkcolor, margin: item.ctl_margin, padding: item.ctl_padding, }"
-          >
-            <div class="flex_row">
-              <div
-                class="flex_row groupTitle"
-                :style="{height: item.ctl_bar_height,  borderLeftColor: item.ctl_bar_color, borderLeftWidth: item.ctl_bar_width,
-                paddingLeft: item.ctl_spacing,
-                }"
-              >
-                <span
-                  class="flex_row classTitle"
-                  :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size, fontStyle: (item.ctl_title_italic ? 'italic':'normal'),
-                  fontWeight: (item.ctl_title_bold ? 'bold':'normal'), }"
-                >{{item.ctl_title}}</span>
-              </div>
-            </div>
-            <div
-              :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal'),
-              fontWeight: (item.ctl_subtitle_bold ? 'bold':'normal'), }"
-            >{{item.ctl_subtitle || ""}}</div>
-          </div>
-        </template>
+        <!-- 详情分组 -->
+        <detail-group v-if="item.ctl_type === 'group'" :value="item" />
 
-        <template v-else-if="item.ctl_type === 'show_text'">
-          <div
-            class="basic classShow"
-            :style="{backgroundColor: item.text_bkcolor, padding: item.ctl_margin}"
-          >
-            <span
-              class="preWrap"
-              :style="{color: item.text_color, backgroundColor: item.text_bkcolor, fontSize: item.ctl_value_size,
-            fontStyle: (item.text_italic ? 'italic':'normal'), fontWeight: (item.text_bold ? 'bold':'normal'), textAlign: item.ctl_value_align, width: '100%'}"
-            >{{item.ctl_value}}</span>
-          </div>
-        </template>
+        <!-- 详情文本 show_text -->
+        <detail-show-text v-if="item.ctl_type === 'show_text'" :value="item" />
 
-        <template v-else-if="item.ctl_type === 'show_image'">
-          <div class="basic classShow" :style="{padding: item.ctl_margin}">
-            <van-image width="100%" :src="item.ctl_value" />
-          </div>
-        </template>
+        <!-- 详情图片 show_image -->
+        <detail-show-image v-if="item.ctl_type === 'show_image'" :value="item" />
 
-        <template v-else-if="item.ctl_type === 'separator'">
-          <div
-            class="van-separator"
-            :style="{margin: item.ctl_margin, borderWidth: item.height, borderBottomStyle: item.linetype, borderColor: item.color,}"
-          ></div>
-          <div class="padding-box" :style="{margin: item.ctl_margin, marginTop: '0', }"></div>
-        </template>
+        <!-- 分割符 -->
+        <detail-separator v-if="item.ctl_type === 'separator'" :value="item" />
 
-        <template v-else-if="item.ctl_type == 'data_text'">
-          <div class="padding-box" :style="{margin: item.ctl_margin, padding: item.ctl_padding, }" v-copy>
-            <div class="basic dataClass">
-              <span
-                class="basicTitle"
-                :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size, fontStyle: (item.ctl_title_italic ? 'italic':'normal'), 
-              fontWeight: (item.ctl_title_bold ? 'bold':'normal'), }"
-              >{{item.ctl_title}}</span>
-              <div
-                :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal')
-                ,fontWeight: (item.ctl_subtitle_bold ? 'bold':'normal'),}"
-              >{{item.ctl_subtitle || ""}}</div>
-            </div>
-            <div class="widthAll" :style="{height: item.ctl_spacing }"></div>
-            <div class="basic dataClass" :style="{padding: item.isHtml ? '0' : '' }">
-              <div
-                class="data-value"
-                :style="{color: item.ctl_value_color, fontSize: item.ctl_value_size, fontStyle: (item.text_italic ? 'italic':'normal'),
-                fontWeight: (item.text_bold ? 'bold':'normal')}"
-                :class="{'preWrap': item.isMul, 'widthAll': item.isHtml}"
-              >
-                <template v-if="!item.isWeb && !item.isHtml">{{item.ctl_value}}</template>
-                <template v-if="item.isWeb">
-                  <a
-                    class="urlCLass"
-                    @click="clickUrl(item.ctl_value)"
-                    :style="{color: item.ctl_value_color, fontSize: item.ctl_value_size, 
-                    fontStyle: (item.ctl_value_italic ? 'italic':'normal'), fontWeight: (item.ctl_value_bold ? 'bold':'normal')}"
-                  >{{item.ctl_value}}</a>
-                </template>
-                <div v-if="item.isHtml" class="edit-html-box">
-                  <quill-editor
-                    v-model="item.ctl_value"
-                    :options="htmlOption"
-                    :disabled="true"
-                    ref="myQuillEditor"
-                  ></quill-editor>
-                </div>
-              </div>
-              <div class="flex_row">
-                <div
-                  v-waves2
-                  v-for="(icnItem, nIndex) in item.icnArr"
-                  :key="nIndex"
-                  style="padding: 10px; border-radius: 5px"
-                  @click="clickHandler(icnItem.funcName, item)"
-                >
-                  <i class="iconfont my-icon2" :class="icnItem.icn"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </template>
+        <!-- 详情文本 data_text -->
+        <detail-data-text v-if="item.ctl_type === 'data_text'" :value="item" @onMapBox="onMapBox" />
 
-        <template v-else-if="item.ctl_type === 'data_tag'">
-          <div class="padding-box" :style="{margin: item.ctl_margin, padding: item.ctl_padding, }">
-            <div class="basic tag-wrap dataClass">
-              <span
-                class="flex_row basicTitle"
-                :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size,
-              fontStyle: (item.ctl_title_italic ? 'italic':'normal'),}"
-              >{{item.ctl_title}}</span>
-              <div
-                :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal')
-                ,fontWeight: (item.ctl_subtitle_bold ? 'bold':'normal'),}"
-              >{{item.ctl_subtitle || ""}}</div>
-            </div>
-            <div class="widthAll" :style="{height: item.ctl_spacing }"></div>
-            <div class="basic tag-box">
-              <div
-                class="tag-class"
-                v-for="(tagName, tagIndex) in item.arr"
-                :key="tagIndex"
-                :style="{ backgroundColor: item.colorArr[tagIndex],
-                color: item.ctl_value_color, fontSize: item.ctl_value_size, fontStyle: (item.ctl_value_italic ? 'italic':'normal'),
-                fontWeight: (item.ctl_value_bold ? 'bold':'normal'), marginBottom: item.ctl_spacing , marginRight: item.ctl_spacing , 
-                borderRadius: item.ctl_value_radius, paddingLeft: item.ctl_value_radius, paddingRight: item.ctl_value_radius  }"
-              >
-                {{tagName}}
-                <!-- <div class="table_wrap"><div class="table_txt">{{tagName}}</div></div> -->
-              </div>
-            </div>
-          </div>
-        </template>
+        <!-- 详情标签 -->
+        <detail-data-tag v-if="item.ctl_type === 'data_tag'" :value="item" />
 
-        <template v-else-if="(item.ctl_type === 'data_image')">
-          <div
-            class="basic h140 dataClass"
-            :style="{margin: item.ctl_margin, padding: item.ctl_padding, }"
-          >
-            <span
-              class="basicTitle"
-              :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size, fontStyle: (item.ctl_title_italic ? 'italic':'normal'),
-              fontWeight: (item.ctl_title_bold ? 'bold':'normal'), }"
-            >{{item.ctl_title}}</span>
-            <div class="single-img-wrap">
-              {{item.ctl_placeholder}}
-              <van-image
-                v-waves2
-                v-for="(image, imageIndex) in item.arr"
-                :key="imageIndex"
-                fit="cover"
-                width="50px"
-                height="50px"
-                :src="image"
-                :radius="item.image_fillet ? '5px' : '50%'"
-                @click="previewImgs(item, imageIndex)"
-              />
-            </div>
-          </div>
-        </template>
+        <!-- 详情图片 data_image -->
+        <detail-data-image
+          v-if="item.ctl_type === 'data_image'"
+          :value="item"
+          @previewImgs="previewImgs"
+        />
 
-        <template v-else-if="(item.ctl_type === 'data_images')">
-          <div class="padding-box" :style="{margin: item.ctl_margin, padding: item.ctl_padding, }">
-            <div class="basic tag-wrap dataClass">
-              <span
-                class="flex_row basicTitle"
-                :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size, fontStyle: (item.ctl_title_italic ? 'italic':'normal'),}"
-              >{{item.ctl_title}}</span>
-              <div
-                :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal')
-                ,fontWeight: (item.ctl_subtitle_bold ? 'bold':'normal'),}"
-              >{{item.ctl_subtitle || ""}}</div>
-            </div>
-            <div class="widthAll" :style="{height: item.ctl_spacing }"></div>
-            <div class="flex_row images-box" v-if="item.arr.length > 0">
-              <van-image
-                v-waves2
-                v-for="(image, imageIndex) in item.arr"
-                :key="imageIndex"
-                fit="cover"
-                :width="item.imgWidth"
-                :height="item.imgWidth"
-                :style="{ marginBottom: item.ctl_spacing, marginRight: (imageIndex + 1) % item.image_columns !== 0 ? item.ctl_spacing : '0', }"
-                :src="image"
-                :radius="item.image_fillet ? '5px' : ''"
-                @click="previewImgs(item, imageIndex)"
-              />
-            </div>
-          </div>
-        </template>
+        <!-- 详情图片 data_images -->
+        <detail-data-images
+          v-if="item.ctl_type === 'data_images'"
+          :value="item"
+          @previewImgs="previewImgs"
+        />
 
-        <template v-else-if="(item.ctl_type === 'data_files')">
-          <div class="padding-box" :style="{margin: item.ctl_margin, padding: item.ctl_padding, }">
-            <div class="basic tag-wrap dataClass">
-              <span
-                class="flex_row basicTitle"
-                :style="{color: item.ctl_title_color, fontSize: item.ctl_title_size,
-                fontStyle: (item.ctl_title_italic ? 'italic':'normal'),}"
-              >{{item.ctl_title}}</span>
-              <div
-                :style="{color: item.ctl_subtitle_color, fontSize: item.ctl_subtitle_size, fontStyle: (item.ctl_subtitle_italic ? 'italic':'normal')
-                ,fontWeight: (item.ctl_subtitle_bold ? 'bold':'normal'),}"
-              >{{item.ctl_subtitle || ""}}</div>
-            </div>
-            <div class="widthAll" :style="{height: item.ctl_spacing }"></div>
-            <template v-for="(file, fileIndex) in item.fileArr">
-              <div
-                class="flex_row name-box"
-                :key="fileIndex"
-                :style="{marginTop: item.ctl_spacing, marginBottom: item.ctl_spacing, }"
-              >
-                <div class="name-icn-box">
-                  <svg class="icon name-icn" aria-hidden="true">
-                    <use :xlink:href="file.icn" />
-                  </svg>
-                </div>
-                <div
-                  class="flex_row file-name-box"
-                  :style="{color: item.ctl_value_color, fontSize: item.ctl_value_size, fontStyle: (item.ctl_value_italic ? 'italic':'normal'), 
-                  fontWeight: (item.ctl_value_bold ? 'bold':'normal'), }"
-                >
-                  <span class="name-icn-box">
-                    <span class="name-icn">{{file.name}}.{{file.type}}</span>
-                  </span>
-                  <!-- <span class="file-type">.{{file.type}}</span> -->
-                </div>
-                <div class="separator-box">
-                  <div
-                    class="van-separator"
-                    :style="{margin: item.ctl_value_line_margin, borderWidth: item.ctl_value_lineheight, borderBottomStyle: item.ctl_value_linetype,
-                    borderColor: item.ctl_value_linecolor,}"
-                  ></div>
-                  <div
-                    class="padding-box"
-                    :style="{margin: item.ctl_value_line_margin, marginTop: '0', }"
-                  ></div>
-                </div>
-              </div>
-            </template>
-          </div>
-        </template>
+        <!-- 详情文件 data_files -->
+        <detail-data-files v-if="item.ctl_type === 'data_files'" :value="item" />
       </div>
     </div>
 
@@ -284,12 +58,23 @@
 <script>
 import noContent from "@/components/noContent";
 import tools from "@/utils/tool";
-import "quill/dist/quill.snow.css";
 import { quillEditor } from "vue-quill-editor";
 import axios from "@/api/axios";
 import { ImagePreview } from "vant";
 import TencentMap from "@/components/TencentMap";
 import PreviewImage from "@/components/PreviewImage";
+import PageHeader from "@/components/PageHeader";
+import DetailGroup from "@/components/DetailGroup";
+import DetailShowText from "@/components/DetailShowText";
+import DetailShowImage from "@/components/DetailShowImage";
+import DetailSeparator from "@/components/DetailSeparator";
+import DetailDataText from "@/components/DetailDataText";
+import DetailDataTag from "@/components/DetailDataTag";
+import DetailDataImage from "@/components/DetailDataImage";
+import DetailDataImages from "@/components/DetailDataImages";
+import DetailDataFiles from "@/components/DetailDataFiles";
+
+import "quill/dist/quill.snow.css";
 
 export default {
   name: "formShow",
@@ -298,6 +83,16 @@ export default {
     quillEditor,
     TencentMap,
     PreviewImage,
+    PageHeader,
+    DetailGroup,
+    DetailShowText,
+    DetailShowImage,
+    DetailSeparator,
+    DetailDataText,
+    DetailDataTag,
+    DetailDataImage,
+    DetailDataImages,
+    DetailDataFiles,
     [ImagePreview.Component.name]: ImagePreview.Component
   },
   data() {
@@ -334,7 +129,7 @@ export default {
       }
     };
   },
-  watch: {},
+
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (from.name === "previewImage") {
@@ -595,10 +390,6 @@ export default {
       this.$refs["tencentMap"].onMapBox(item);
     },
 
-    hideMapBox() {
-      this.hasMapBox = false;
-    },
-
     clickHandler(funcName, param) {
       console.log("funcName", funcName, "param", param);
       this[funcName](param);
@@ -630,11 +421,6 @@ export default {
 
     clickUrl(item) {
       this.$clickUrl(item.ctl_value);
-    },
-
-    toMapNav(keyword) {
-      console.log("toMapNav");
-      this.$mapNav(keyword);
     },
 
     async getFormList(herf) {
@@ -696,8 +482,7 @@ export default {
     console.log("created....................................");
     console.log("window.location.href", window.location.href);
     this.getFormList(window.location.href);
-  },
-  mounted() {}
+  }
 };
 </script>
 
@@ -749,23 +534,10 @@ export default {
 .bg1 {
   background: #ccc !important;
 }
-.table_wrap {
-  // display: table;
-  // overflow: hidden;
-  // // background-color: #eee;
-}
-.table_txt {
-  // display: table-cell;
-  // line-height: normal;
-  // // vertical-align: middle;
-  // background-color: #333;
-}
+
 .click_class {
   padding: 20px !important;
   border-radius: 3px !important;
-}
-.vant-f15 {
-  // font-size: 15px !important;
 }
 
 /*共用样式 e*/
@@ -781,51 +553,6 @@ export default {
   .zhanwei {
     height: 88px;
   }
-  /* header样式 s*/
-  header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    box-sizing: border-box;
-    height: 88px;
-    width: 100%;
-    padding: 19px 0;
-    background: #fff;
-    border-bottom: 1px solid #ddd;
-    @include flexS;
-    .left {
-      @include flexC;
-      height: 88px;
-      padding: 0 20px;
-      font-size: 36px;
-      color: #690;
-      border-radius: 3px;
-    }
-    .page-title {
-      // @include flexC;
-      // height: 88px;
-      max-width: 400px;
-      // margin-right: 32px;
-      font-size: 36px;
-      color: #333333;
-      border-radius: 3px;
-      text-align: left;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-    .page-title-right {
-      @include flexC;
-      margin-left: 12px;
-      padding: 0 30px;
-      height: 88px;
-      margin-right: 0;
-      color: #690;
-    }
-  }
-  /* header样式 e*/
-
   .basic {
     @include flexS;
     width: 100%;
@@ -1210,13 +937,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-}
-.flex_bewteen {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .form {
