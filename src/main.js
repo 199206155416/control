@@ -11,7 +11,7 @@ import FastClick from 'fastclick'
 import './plugins/waves'
 import './plugins/mini-ui'
 import './plugins/vant'
-import './directive/index'
+import './directive/copy'
 
 import 'vant/lib/index.css'
 

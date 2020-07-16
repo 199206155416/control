@@ -7,6 +7,7 @@
     }"
   >
     <span
+      v-copy="copy ? {value: value.ctl_value, title: `文本`} : null"
       class="preWrap"
       :style="{
         color: value.text_color, 
@@ -17,11 +18,13 @@
           textAlign: value.ctl_value_align, 
           width: '100%'
         }"
-    >{{value.ctl_value}}</span>
+    >{{value.ctl_value}}--{{copy}}</span>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex"
+
 export default {
   name: "detail-show-text",
 
@@ -30,6 +33,12 @@ export default {
       type: Object,
       default: {}
     }
+  },
+
+  computed: {
+    ...mapState({
+      copy: state => state.detail.copy
+    })
   }
 };
 </script>

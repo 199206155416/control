@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 import noContent from "@/components/noContent";
 import tools from "@/utils/tool";
 import { quillEditor } from "vue-quill-editor";
@@ -134,6 +136,7 @@ export default {
     next();
   },
   methods: {
+    ...mapMutations(["changeCopy", "changeHiddenNumber"]),
     listFilter(list) {
       const arrItems = {
         data_mobile: [
@@ -410,18 +413,21 @@ export default {
 
     async getFormList(herf) {
       //获取首页数据
-      console.log("getFormList window", window);
-      console.log(
-        "getFormList navigator.userAgent",
-        window.navigator.userAgent
-      );
       let u = window.navigator.userAgent;
       var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-      console.log("getFormList isiOS", isiOS);
       this.$openIndicator();
       let res = await this.$http.formList(herf);
-      console.log("formList res", res);
       if (res.success === true) {
+        const { copy, hidden_number } = res.data
+
+        if (copy) {
+          this.changeCopy(true)
+        }
+
+        if (hidden_number) {
+          this.changeHiddenNumber(true)
+        }
+
         this.controls = res.data.controls;
         this.pageSet.pageTitle = res.data.title;
         document.title = res.data.title || "通用表单";

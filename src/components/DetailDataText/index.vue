@@ -31,8 +31,11 @@
         }"
         :class="{'preWrap': value.isMul, 'widthAll': value.isHtml}"
       >
-        <template v-if="!value.isWeb && !value.isHtml">{{value.ctl_value}}</template>
-        <template v-if="value.isWeb">
+        <span
+          v-copy="copy ? {value: value.ctl_value, title: value.ctl_title} : null"
+          v-if="!value.isWeb && !value.isHtml"
+        >{{value.ctl_value}}</span>
+        <span v-copy="copy ? {value: value.ctl_value, title: value.ctl_title} : null" v-if="value.isWeb">
           <a
             class="urlCLass"
             @click="clickUrl(value.ctl_value)"
@@ -43,8 +46,8 @@
               fontWeight: (value.ctl_value_bold ? 'bold':'normal')
             }"
           >{{value.ctl_value}}</a>
-        </template>
-        <div v-if="value.isHtml" class="edit-html-box">
+        </span>
+        <div v-copy="copy ? {value: value.ctl_value, title: value.ctl_title} : null" v-if="value.isHtml" class="edit-html-box">
           <quill-editor
             v-model="value.ctl_value"
             :options="htmlOption"
@@ -70,6 +73,7 @@
 
 <script>
 import { quillEditor } from "vue-quill-editor";
+import { mapState } from 'vuex'
 
 export default {
   name: "detail-data-text",
@@ -96,6 +100,12 @@ export default {
         }
       }
     };
+  },
+
+  computed: {
+    ...mapState({
+      copy: state => state.detail.copy
+    })
   },
 
   components: {
