@@ -2,11 +2,7 @@
   <div class="form">
     <div
       v-show="contentShow"
-      :style="{ 
-        backgroundColor: pageSet.style.ctl_bkcolor, 
-        margin: pageSet.style.ctl_margin, 
-        padding: pageSet.style.ctl_padding, 
-      }"
+      :style="pageStyle"
     >
       <div class="zhanwei"></div>
       <page-header :pageSet="pageSet" />
@@ -107,10 +103,9 @@ export default {
         pageTitle: "新建客户",
         operation: "刷新",
         type: "edit",
-        operation_url: "",
-        style: {}
+        operation_url: ""
       },
-
+      pageStyle: {},
       fileist: [],
       controls: [],
       contentShow: false
@@ -314,7 +309,6 @@ export default {
       strArr = strArr.map(e =>
         parseInt(e) > 2 ? parseInt(e) * 0.01334 + "rem" : e + "px"
       );
-      // console.log('pxToRem strArr', strArr.join(' '));
       return strArr.join(" ");
     },
     previewImgs(item, startPosition) {
@@ -378,34 +372,6 @@ export default {
       this.$refs["tencentMap"].onMapBox(item);
     },
 
-    clickHandler(funcName, param) {
-      console.log("funcName", funcName, "param", param);
-      this[funcName](param);
-    },
-
-    smsWechat(item) {
-      console.log("smsWechat");
-      this.$smsWechat(item.ctl_value);
-    },
-
-    smsQq(item) {
-      console.log("smsWechat");
-      this.$smsWechat(item.ctl_value);
-    },
-
-    smsPhone(item) {
-      console.log("smsPhone");
-      this.$callPhone(item.ctl_value);
-    },
-
-    callPhone(item) {
-      console.log("callPhone");
-      this.$callPhone(item.ctl_value);
-    },
-
-    sendEmail(item) {
-      this.$sendEmail(item.ctl_value);
-    },
 
     clickUrl(item) {
       this.$clickUrl(item.ctl_value);
@@ -418,7 +384,7 @@ export default {
       this.$openIndicator();
       let res = await this.$http.formList(herf);
       if (res.success === true) {
-        const { copy, hidden_number } = res.data
+        const { copy, hidden_number, margin, bkcolor } = res.data
 
         if (copy) {
           this.changeCopy(true)
@@ -427,6 +393,12 @@ export default {
         if (hidden_number) {
           this.changeHiddenNumber(true)
         }
+
+        this.pageStyle = {
+          margin,
+          backgroundColor: bkcolor
+        }
+
 
         this.controls = res.data.controls;
         this.pageSet.pageTitle = res.data.title;
@@ -470,8 +442,6 @@ export default {
     }
   },
   created() {
-    console.log("created....................................");
-    console.log("window.location.href", window.location.href);
     this.getFormList(window.location.href);
   }
 };
