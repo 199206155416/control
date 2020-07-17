@@ -22,7 +22,7 @@ Vue.directive('copy', {
     }
 
     // 去除空格
-    let {value, title="文本"} = binding.value
+    let { value, title = "文本" } = binding.value
 
     value = value.trim()
     title = title.trim()
@@ -31,7 +31,7 @@ Vue.directive('copy', {
       const range = document.createRange();
       const tempDiv = document.createElement('div');
       document.body.append(tempDiv)
-      tempDiv.innerHTML = title + ":" +value
+      tempDiv.innerHTML = title + ":" + value
       tempDiv.style.opacity = 0;
       tempDiv.style.position = "absolute";
       tempDiv.style.userSelect = "all";
@@ -40,7 +40,7 @@ Vue.directive('copy', {
       if (selection.rangeCount > 0) selection.removeAllRanges();
       selection.addRange(range);
       document.execCommand('copy');
-      Toast(`"${title}:${value}"已复制到剪贴板`);
+      Toast(`"${title}"已复制`);
       tempDiv.remove()
     }, false);
   }

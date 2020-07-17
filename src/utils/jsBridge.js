@@ -1,4 +1,5 @@
-import { Toast, Indicator,MessageBox  } from 'mint-ui'
+import { Toast, Indicator, MessageBox } from 'mint-ui'
+import Vue from 'vue'
 
 const env = process.env.NODE_ENV === 'development' // 环境变量为true时是开发环境
 // const env = true;// 环境变量为true时是开发环境
@@ -48,12 +49,12 @@ export const getRegistrationTicket = () => {
 }
 
 // 提示 (注册到全局)
-export const showToast = ({ type, message,iconClass='' }) => {
+export const showToast = ({ type, message, iconClass = '' }) => {
   if (env) {
     Toast({
       message: message,
       position: 'center',
-      iconClass:iconClass
+      iconClass: iconClass
     })
   } else {
     // type - 类型， 1 红色， 2 黄色， 3 绿色
@@ -71,7 +72,7 @@ export const openIndicator = () => {
     Indicator.open()
   } else {
     try {
-      let time=300000;
+      let time = 300000;
       window.web.showLoadingDialog(time)
     } catch (e) {
       alert('window.web.showLoadingDialog+' + e)
@@ -93,17 +94,17 @@ export const closeIndicator = () => {
 }
 
 //浏览器窗口确认框confirm
-export const showConfirm = (msg,callback) => {
+export const showConfirm = (msg, callback) => {
   if (env) {
-    MessageBox.confirm(msg).then(res =>{
-        callback(true)
-      }).catch(err =>{
-        callback(false)
-      })
+    MessageBox.confirm(msg).then(res => {
+      callback(true)
+    }).catch(err => {
+      callback(false)
+    })
   } else {
     try {
-      let b= window.confirm(msg)
-        callback(b)
+      let b = window.confirm(msg)
+      callback(b)
     } catch (e) {
       alert('window.web.confirm+' + e)
     }
@@ -149,3 +150,54 @@ export const mapNav = (keyword) => {
 export const saveImage = (url) => {
   window.location.href = url;
 }
+
+
+// 定位
+export const geolocation = (map) => {
+  if (env) {
+    return new Promise((resolve, reject) => {
+      AMap.plugin('AMap.Geolocation', function () {
+        var geolocation = new AMap.Geolocation({
+          enableHighAccuracy: true,//是否使用高精度定位，默认:true
+          timeout: 10000,          //超过10秒后停止定位，默认：5s
+          buttonPosition: 'RB',    //定位按钮的停靠位置
+          buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+          zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+  
+        });
+        map.addControl(geolocation);
+        geolocation.getCurrentPosition(function (status, result) {
+          if (status == 'complete') {
+            onComplete(result)
+          } else {
+            onError(result)
+          }
+        });
+      });
+      //解析定位结果
+      function onComplete(data) {
+        console.log('定位成功:'+ data)
+        resolve(data);
+      }
+      //解析定位错误信息
+      function onError(data) {
+        console.log('定位失败:' + data.message);
+        reject(data.message)
+      }
+    })
+  }
+}
+
+Vue.prototype.$showToast = showToast
+Vue.prototype.$openIndicator = openIndicator
+Vue.prototype.$closeIndicator = closeIndicator
+Vue.prototype.$showConfirm = showConfirm
+Vue.prototype.$callPhone = callPhone
+Vue.prototype.$smsPhone = smsPhone
+Vue.prototype.$smsWechat = smsWechat
+Vue.prototype.$smsQq = smsQq
+Vue.prototype.$sendEmail = sendEmail
+Vue.prototype.$clickUrl = clickUrl
+Vue.prototype.$saveImage = saveImage
+Vue.prototype.$mapNav = mapNav
+Vue.prototype.$geolocation = geolocation

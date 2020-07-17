@@ -16,7 +16,7 @@ module.exports = {
                 // }
             },
             '/map': {
-                target: 'https://apis.map.qq.com/', // 代理目标的基础路径
+                target: 'https://restapi.amap.com/', // 代理目标的基础路径
                 // secure: false,  // 如果是https接口，需要配置这个参数
                 changeOrigin: true, // 支持跨域
                 pathRewrite: { // 重写路径: 去掉路径中开头的'/api'
