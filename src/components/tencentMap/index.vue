@@ -92,28 +92,28 @@ export default {
     },
     async toMapNav(keyword) {
       
-     
+      
 
-      const { position: {lng, lat} } = await this.$geolocation(this.map);
-      // console.log("geolocation", data)
+      // const { position: {lng, lat} } = await this.$geolocation(this.map);
+      // // console.log("geolocation", data)
 
-      //构造路线导航类
-      var driving = new AMap.Driving({
-        map: this.map
-      });
-      // 根据起终点经纬度规划驾车导航路线
-      driving.search(
-        new AMap.LngLat(lng, lat),
-        new AMap.LngLat(this.lng, this.lat),
-        (status, result) => {
-          // result 即是对应的驾车导航信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_DrivingResult
-          if (status === "complete") {
-            this.$toast("绘制驾车路线完成");
-          } else {
-            this.$toast("获取驾车数据失败：" + result);
-          }
-        }
-      );
+      // //构造路线导航类
+      // var driving = new AMap.Driving({
+      //   map: this.map
+      // });
+      // // 根据起终点经纬度规划驾车导航路线
+      // driving.search(
+      //   new AMap.LngLat(lng, lat),
+      //   new AMap.LngLat(this.lng, this.lat),
+      //   (status, result) => {
+      //     // result 即是对应的驾车导航信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_DrivingResult
+      //     if (status === "complete") {
+      //       this.$toast("绘制驾车路线完成");
+      //     } else {
+      //       this.$toast("获取驾车数据失败：" + result);
+      //     }
+      //   }
+      // );
     }
   }
 };
